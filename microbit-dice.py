@@ -89,16 +89,16 @@ while True:
         sleep(1000)
     if button_b.was_pressed():
         my_id = my_id - 1
-        if (MIN_ID < my_id):
+        if (MIN_ID > my_id):
             my_id = MIN_ID
         display.show(my_id)
         sleep(1000)
 
     # If the dice is held face down it behaves as a receiver
     # TODO - split this off as a seperate version of code...
-    if accelerometer.was_gesture('face down'):
+    if accelerometer.is_gesture('face down'):
         # Read any incoming messages.
-        dice_value = 0  
+        dice_value = 0
         display.clear()
         display.show(rx)
         details = radio.receive_full()
@@ -109,7 +109,7 @@ while True:
             #rx_seq = msg[1]
             #rx_dice = msg[2]
 
-    # Shake the Dice to start rolling...            
+    # Shake the Dice to start rolling...
     if accelerometer.is_gesture('shake'):
         display.clear()
         while accelerometer.is_gesture('shake'):
@@ -133,5 +133,5 @@ while True:
     # repeat dice radio message transmission at least once - will continue until rolled again
     if 0 < dice_value:
         send_dice(my_id, sequence, dice_value)
-        sleep(200)                                          # sleep to limit rate at which messages are sent  
+        sleep(200)                                          # sleep to limit rate at which messages are sent
     sleep(10)
